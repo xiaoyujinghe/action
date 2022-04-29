@@ -1,0 +1,75 @@
+name: markdown convert to pdf
+
+on:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - '.github/workflows/**.yml'
+    tags:        
+      - v*             # Push events to v1 tag
+
+jobs:
+  convert:
+    if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2 # access repo files
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.7' 
+          architecture: 'x64' 
+
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+      - name: PandocLatex
+        uses: ./
+        with:
+          args: >-
+            pandoc README.md 
+            -o artifact/README.pdf
+            --from markdown 
+            --template template/eisvogel.latex 
+            --resource-path=./ 
+            --number-sections 
+            --top-level-division=chapter 
+            --shift-heading-level-by=-1 
+            --highlight-style monochrome 
+            --pdf-engine "xelatex" 
+            --toc 
+            -V CJKmainfont="Noto Sans Mono CJK SC"
+            -V toc-own-page="true" 
+            -V book
+            -V code-block-font-size="\normalsize"
+            -V author="Xiaoyu"
+            -V date="${{ steps.date.outputs.date }}"
+      - name: UploadArtifact
+        uses: actions/upload-artifact@master
+        with:
+          name: build-${{ github.run_number }}
+          path: artifact
+
+      - name: PushCommit
+        if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+        run: |
+          cp README.pdf backups/${{ steps.date.outputs.date }}-README${{ github.run_number }}.pdf
+          cp README.md backups/${{ steps.date.outputs.date }}-README${{ github.run_number }}.md
+          git config user.name xiaoyujinghe
+          git config user.email heyujing0@163.com
+          git add .
+          git commit -m "CI: produce ${{ steps.date.outputs.date }}-README${{ github.run_number }}.pdf"
+          git push
+  release:
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: artifact/build.pdf
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
