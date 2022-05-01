@@ -1,4 +1,4 @@
-name: markdown convert to pdf
+name: convert markdown to pdf
 
 on:
   push:
@@ -54,4 +54,4 @@ jobs:
         with:
           files: artifact/build.pdf
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ACTIONS_TOKEN: ${{ secrets.ACTIONS_TOKEN }}
