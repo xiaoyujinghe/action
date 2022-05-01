@@ -35,7 +35,10 @@ jobs:
           architecture: 'x64'
 
       - name: PandocLatex
-        run: pandoc README.md 
+        uses: ./
+        with:
+          args: >-
+            pandoc README.md 
             -o artifact/README.pdf
             --from markdown 
 
