@@ -29,9 +29,15 @@ jobs:
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
-      # Runs a single command using the runners shell
-      - name: Markdown to PDF
-        uses: valtyr/pandoc-action@v0.1-alpha
+      - name: PandocLatex
+        uses: ./
+        with:
+          args: >-
+            pandoc README.md 
+            -o artifact/README.pdf
+            --from markdown 
+            --template template/eisvogel.latex 
+            --resource-path=/ 
 
       # Runs a set of commands using the runners shell
       - name: UploadArtifact
