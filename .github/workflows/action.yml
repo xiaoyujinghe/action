@@ -29,15 +29,19 @@ jobs:
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.7' # Version range or exact version of a Python version to use, using SemVer's version range syntax
+          architecture: 'x64'
+
       - name: PandocLatex
         uses: ./
         with:
           args: >-
             pandoc README.md 
+            -f markdown
+            -s 
             -o artifact/README.pdf
-            --from markdown 
-            --template template/eisvogel.latex 
-            --resource-path=/ 
 
       # Runs a set of commands using the runners shell
       - name: UploadArtifact
