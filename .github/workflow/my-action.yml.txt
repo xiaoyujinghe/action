@@ -39,8 +39,6 @@ jobs:
         run: |
           cp README.pdf backups/${{ steps.date.outputs.date }}-README${{ github.run_number }}.pdf
           cp README.md backups/${{ steps.date.outputs.date }}-README${{ github.run_number }}.md
-          git config user.name xiaoyujinghe
-          git config user.email heyujing0@163.com
           git add .
           git commit -m "CI: produce ${{ steps.date.outputs.date }}-README${{ github.run_number }}.pdf"
           git push
