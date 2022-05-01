@@ -3,11 +3,10 @@
 name: Docs to PDF
 # This workflow is triggered on pushes to the repository.
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   converttopdf:
@@ -22,7 +21,7 @@ jobs:
           # Default is true, can set to false to only get PDF files
           build_html: false
       - name: UploadArtifact
-        uses: actions/upload-artifact@master
-        with:
-          name: build-${{ github.run_number }}
-          path: artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: build-${{ github.run_number }}
+          path: artifact
