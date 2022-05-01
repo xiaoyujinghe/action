@@ -24,8 +24,6 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
 
       - name: Get current date
         id: date
@@ -37,13 +35,11 @@ jobs:
           architecture: 'x64'
 
       - name: PandocLatex
-        uses: ./
         with:
           args: >-
             pandoc README.md 
-            -f markdown
-            -s 
             -o artifact/README.pdf
+            --from markdown 
 
       # Runs a set of commands using the runners shell
       - name: UploadArtifact
