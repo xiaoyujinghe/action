@@ -32,3 +32,11 @@ replica <server-address-9>:<port>
 ```
 
 shard.tss.config
+
+```
+f 1
+replica <server-address-10>:<port>
+replica <server-address-11>:<port>
+replica <server-address-12>:<port>
+```
+
