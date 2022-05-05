@@ -40,3 +40,13 @@ replica <server-address-11>:<port>
 replica <server-address-12>:<port>
 ```
 
+## Running Servers
+
+To start the replicas, run the following command with the `server`
+binary for any of the stores,
+
+`./server -c <shard-config-$n> -i <replica-number> -m <mode> -f <preload-keys>`
+
+For each shard, you need to run `2f+1` instances of `server`
+corresponding to the address:port pointed by `replica-number`.
+Make sure you run all replicas for all shards.
