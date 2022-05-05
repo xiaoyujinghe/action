@@ -50,3 +50,9 @@ binary for any of the stores,
 For each shard, you need to run `2f+1` instances of `server`
 corresponding to the address:port pointed by `replica-number`.
 Make sure you run all replicas for all shards.
+
+## Running Clients
+
+To run any of the clients in the benchmark directory,
+
+`./client -c <shard-config-prefix> -N <n_shards> -m <mode>`
